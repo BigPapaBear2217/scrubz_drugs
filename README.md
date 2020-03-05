@@ -29,10 +29,6 @@ local cocaineEnter = vector3(-85.98, -1794.88, 27.66)
 local methEnter = vector3(-93.73, -1788.34, 28.09)
 ```
 
-----------------------------------------------------
-
-I left a cocaine example in to deal with producing drugs at the locations. I am not including anthing else since everyone has different
-items and requires differnt amounts of things to do stuff. But I did lay the groundwork to have other drugs working. All you need to do
-is fill in the bits I left blank since the triggers are already there in a few spots like cocaine is.
+By default the enter locations are located at the Auto Fix Factory bay doors across the street from the Grove St. Gas Station.
 
 ----------------------------------------------------
