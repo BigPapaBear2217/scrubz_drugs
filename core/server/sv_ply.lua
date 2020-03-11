@@ -77,8 +77,8 @@ AddEventHandler('scrubz_drugs_sv:drugsCheck', function(ped)
             end
         end
         if Config.EnableCrack then
-            local meth = xPlayer.getInventoryItem(Config.CrackItemName).count
-            if meth >= 1 then
+            local crack = xPlayer.getInventoryItem(Config.CrackItemName).count
+            if crack >= 1 then
                 local drugType = Config.CrackItemName
                 TriggerClientEvent('scrubz_drugs_cl:drugsReturn', source, ped, true, true, drugType)
                 return
