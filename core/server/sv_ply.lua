@@ -38,7 +38,7 @@ function countPolice()
             police = police + 1
         end
     end
-    SetTimeout(60000, countPolice) -- 60 Seconds
+    SetTimeout(30000, countPolice) -- 30 Seconds
 end
 
 countPolice()
