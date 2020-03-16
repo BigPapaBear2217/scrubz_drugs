@@ -27,22 +27,21 @@ end
 ---------------------------
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
----------------------------
--- Citizen Threads --
----------------------------
---//Potential Fix for Updating Online Police//--
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(10000)
-        local players = ESX.GetPlayers()
-	    for i=1, #players, 1 do
- 	        local xPlayer = ESX.GetPlayerFromId(players[i])
- 	        if xPlayer.job.name == 'police' then
-                police = police + 1
-		    end
-	    end
+-- //Replacing the Thread with this. I blame lack of documentation on fivem's part.// --
+-- Thanks Trundle for the useful info!
+function countPolice()
+    local xPlayers = ESX.GetPlayers()
+    police = 0
+    for i=1, #xPlayers, 1 do
+        local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
+        if xPlayer.job.name == 'police' then
+            police = police + 1
+        end
     end
-end)
+    SetTimeout(60000, countPolice) -- 60 Seconds
+end
+
+countPolice()
 
 ---------------------------
 -- Event Handlers --
