@@ -44,26 +44,37 @@ Citizen.CreateThread(function()
                             plantsHarvested[plant] = true
                             FreezeEntityPosition(plyPed, true)
                             TaskStartScenarioInPlace(plyPed, "PROP_HUMAN_BUM_BIN", 0, true)
-                            exports['mythic_progbar']:Progress({
-                                name = "pickingweed",
-                                duration = 5000,
-                                label = "Picking Weed...",
-                                useWhileDead = false,
-                                canCancel = false,
-                                controlDisables = {
-                                    disableMovement = false,
-                                    disableCarMovement = false,
-                                    disableMouse = false,
-                                    disableCombat = false,
-                                },
-                                }, function(status)
-                                if not status then
-                                    ClearPedTasks(plyPed)
-                                    FreezeEntityPosition(plyPed, false)
-                                    TriggerServerEvent('scrubz_drugs_sv:harvestWeed')
-                                    print("Inserted")
-                                end
-                            end)
+                            if Config.UseProgressBars then
+                                exports['progressBars']:startUI(5000, "Picking Weed...")
+                                Citizen.Wait(5000)
+                                ClearPedTasks(plyPed)
+                                FreezeEntityPosition(plyPed, false)
+                                TriggerServerEvent('scrubz_drugs_sv:harvestWeed')
+                                print("Inserted")
+                            elseif Config.UseMythicProgbar then
+                                exports['mythic_progbar']:Progress({
+                                    name = "pickingweed",
+                                    duration = 5000,
+                                    label = "Picking Weed...",
+                                    useWhileDead = false,
+                                    canCancel = false,
+                                    controlDisables = {
+                                        disableMovement = false,
+                                        disableCarMovement = false,
+                                        disableMouse = false,
+                                        disableCombat = false,
+                                    },
+                                    }, function(status)
+                                    if not status then
+                                        ClearPedTasks(plyPed)
+                                        FreezeEntityPosition(plyPed, false)
+                                        TriggerServerEvent('scrubz_drugs_sv:harvestWeed')
+                                        print("Inserted")
+                                    end
+                                end)
+                            elseif Config.UserExport then
+                                -- //Add Your Export Here// --
+                            end
                         end
                         break
                     end
