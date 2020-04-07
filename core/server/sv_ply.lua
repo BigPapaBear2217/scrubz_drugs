@@ -2,12 +2,12 @@
 -- Locals --
 ---------------------------
 ESX = nil
-local police = 0
+local copsConnected = 0
 
 ---------------------------
 -- Functions --
 ---------------------------
-local function calc(max)
+function calc(max)
     if max == 1 then
         random = 1
         return random
@@ -22,23 +22,25 @@ local function calc(max)
     end
 end
 
+
 ---------------------------
 -- ESX --
 ---------------------------
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
--- //Replacing the Thread with this. I blame lack of documentation on fivem's part.// --
--- Thanks Trundle for the useful info!
+---------------------------
+-- Online Police Counter --
+---------------------------
 function countPolice()
     local xPlayers = ESX.GetPlayers()
     police = 0
     for i=1, #xPlayers, 1 do
         local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
         if xPlayer.job.name == 'police' then
-            police = police + 1
+            copsConnected = copsConnected + 1
         end
     end
-    SetTimeout(30000, countPolice) -- 30 Seconds
+    SetTimeout(30000, countPolice)
 end
 
 countPolice()
@@ -46,11 +48,10 @@ countPolice()
 ---------------------------
 -- Event Handlers --
 ---------------------------
--- Checking for Drugs
 RegisterServerEvent('scrubz_drugs_sv:drugsCheck')
 AddEventHandler('scrubz_drugs_sv:drugsCheck', function(ped)
     local xPlayer = ESX.GetPlayerFromId(source)
-    if police >= Config.PoliceRequired then
+    if copsConnected >= Config.PoliceRequired then
         if Config.EnableWeed then
             local weed = xPlayer.getInventoryItem(Config.WeedItemName).count
             if weed >= 1 then
@@ -89,7 +90,6 @@ AddEventHandler('scrubz_drugs_sv:drugsCheck', function(ped)
     end
 end)
 
--- Ending Drug Sale
 RegisterServerEvent('scrubz_drugs_sv:endSale')
 AddEventHandler('scrubz_drugs_sv:endSale', function(drugType)
     local xPlayer = ESX.GetPlayerFromId(source)
@@ -125,7 +125,6 @@ AddEventHandler('scrubz_drugs_sv:endSale', function(drugType)
     end
 end)
 
--- Chat Alert
 RegisterServerEvent('scrubz_drugs_sv:drugSale')
 AddEventHandler('scrubz_drugs_sv:drugSale', function(streetName, plyGender)
 	if plyGender == 0 then
@@ -134,4 +133,54 @@ AddEventHandler('scrubz_drugs_sv:drugSale', function(streetName, plyGender)
 		plyGender = 'Male'
 	end
 	TriggerClientEvent('scrubz_drugs_cl:chatAlert', -1, '[911] I just saw a ' .. plyGender .. ' selling drugs at ' .. streetName ..'.')
+end)
+
+RegisterServerEvent('scrubz_drugs_sv:harvestWeed')
+AddEventHandler('scrubz_drugs_sv:harvestWeed', function()
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local amount = math.random(1, 6)
+    xPlayer.addInventoryItem(Config.WeedBudName, amount)
+end)
+
+RegisterServerEvent('scrubz_drugs_sv:raidItemCheck')
+AddEventHandler('scrubz_drugs_sv:raidItemCheck', function()
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local item = xPlayer.getInventoryItem(Config.SpecialItemName).count
+    if item >= 1 then
+        xPlayer.removeInventoryItem(Config.SpecialItemName, 1)
+        TriggerClientEvent('scrubz_drugs_cl:startLockpick', source)
+    else
+        TriggerClientEvent('mythic_notify:client:SendAlert', source, { type = 'error', text = 'You don\'t have anything to lockpick the door with.', length = 4500 })
+    end
+end)
+
+RegisterServerEvent('scrubz_drugs_sv:startRobbery')
+AddEventHandler('scrubz_drugs_sv:startRobbery', function()
+    TriggerClientEvent('scrubz_drugs_cl:setStatus', -1, true)
+    Citizen.CreateThread(function()
+        while true do
+            Citizen.Wait(Config.CooldownTimer)
+            TriggerClientEvent('scrubz_drugs_cl:setStatus', -1, false)
+            return
+        end
+    end)
+end)
+
+RegisterServerEvent('scrubz_drugs_sv:raidReward')
+AddEventHandler('scrubz_drugs_sv:raidReward', function(level)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if level == class1 then
+        local amount = math.random(15, 30)
+        xPlayer.addInventoryItem(Config.Reward1, amount)
+    elseif level == class2 then
+        local amount = math.random(40, 70)
+        xPlayer.addInventoryItem(Config.Reward1, amount)
+    end
+end)
+
+RegisterServerEvent('scrubz_drugs_sv:searchReward')
+AddEventHandler('scrubz_drugs_sv:searchReward', function()
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local amount6 = math.random(1, 4)
+    xPlayer.addInventoryItem(Config.Reward2, amount6)
 end)

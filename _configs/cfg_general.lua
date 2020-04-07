@@ -17,6 +17,7 @@ Config.UseLocationExtras = true
 ---------------------------
 Config.EnableWeed = true
 Config.WeedItemName = 'weedqtroz'
+Config.WeedBudName = 'ogkush'
 Config.WeedItemPrice = 65
 
 ---------------------------
@@ -29,14 +30,23 @@ Config.CokeItemPrice = 110
 ---------------------------
 -- Meth --
 ---------------------------
-Config.EnableMeth = false
+Config.EnableMeth = true
 Config.MethItemName = 'meth1g'
 Config.MethItemPrice = 205
 
 ---------------------------
 -- Crack --
 ---------------------------
-Config.EnableCrack = false
+Config.EnableCrack = true
 Config.CrackItemName = 'crackrock'
 Config.CrackItemPrice = 285
 
+---------------------------
+-- Materials --
+---------------------------
+Config.RaidTimer = 240  -- 4 Mins
+Config.UseSpecialItem = false
+Config.SpecialItemName = 'advancedlockpick'
+Config.CooldownTimer = 1800000  -- 30 Mins
+Config.Reward1 = 'psuedoephedrine'
+Config.Reward2 = 'lithium'

@@ -2,10 +2,10 @@
 -- Locals --
 ---------------------------
 ESX = nil
-local PlayerData = {}
+isPlyPolice = false
+local playerData = {}
 local cityPos = vector3(-157.85, -956.66, 31.08)
 local plyLoaded = false
-local isPlyPolice = false
 local isPlySelling = false
 local pedsBought = {}
 
@@ -26,7 +26,7 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(10000)
-        if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+        if playerData.job ~= nil and playerData.job.name == 'police' then
             isPlyPolice = true
         else
             isPlyPolice = false
@@ -34,42 +34,48 @@ Citizen.CreateThread(function()
     end
 end)
 
--- Enumerate Pedestrians Thread
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(500)
         if not plyLoaded then
             TriggerServerEvent('scrubz_drugs_sv:getDoors')
+            --TriggerServerEvent('scrubz_drugs_sv:getPlants')
             plyLoaded = true
         end
         if not isPlyPolice then
             local plyPed = GetPlayerPed(-1)
             local plyPos = GetEntityCoords(plyPed)
-            if isNear(plyPos, cityPos, 2200) then
-                for ped in enumeratePeds() do
-                    if ped ~= nil then
-                        local pedType = GetPedType(ped)
-                        if DoesEntityExist(ped) and not IsPedDeadOrDying(ped) and not IsPedInAnyVehicle(ped) and not IsPedAPlayer(ped) and pedType ~= 28 then
-                            local pedPos = GetEntityCoords(ped)
-                            if isNear(plyPos, pedPos, 1.5) then
-                                currentPed = ped
+            if not IsPedInAnyVehicle(plyPed, false) then
+                local isNearCity = #(plyPos - cityPos)
+                if isNearCity <= 2200 then
+                    for ped in enumeratePeds() do
+                        if ped ~= nil then
+                            local pedType = GetPedType(ped)
+                            if DoesEntityExist(ped) and not IsPedDeadOrDying(ped) and not IsPedInAnyVehicle(ped, false) and not IsPedAPlayer(ped) and pedType ~= 28 then
+                                local pedPos = GetEntityCoords(ped)
+                                local isNearPed = #(plyPos - pedPos)
+                                if isNearPed <= 2 then
+                                    currentPed = ped
+                                end
                             end
                         end
                     end
                 end
+            else
+                Citizen.Wait(2000)
             end
         end
     end
 end)
 
--- Selling Drugs Thread
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(5)
         local plyPed = GetPlayerPed(-1)
         local plyPos = GetEntityCoords(plyPed)
         local pedPos = GetEntityCoords(currentPed)
-        if isNear(plyPos, pedPos, 1.5) then
+        local isNear = #(plyPos - pedPos)
+        if isNear <= 2 then
             if not isPlySelling then
                 local textPos = GetEntityCoords(currentPed)
                 DrawText3Ds(textPos.x, textPos.y, textPos.z, 'Press ~r~[E]~w~ to sell drugs')
@@ -78,6 +84,8 @@ Citizen.CreateThread(function()
                     isPlySelling = true
                 end
             end
+        else
+            Citizen.Wait(500)
         end
     end
 end)
@@ -89,17 +97,20 @@ AddEventHandler('skinchanger:loadSkin', function(character)
 	plyGender = character.sex
 end)
 
+RegisterCommand('locations', function(source, args, raw)
+    TriggerServerEvent('scrubz_drugs_sv:getDoors')
+end, false)
+
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-  PlayerData = xPlayer
+  playerData = xPlayer
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-  PlayerData.job = job
+  playerData.job = job
 end)
 
--- Selling Drugs Handler
 RegisterNetEvent('scrubz_drugs_cl:drugsReturn')
 AddEventHandler('scrubz_drugs_cl:drugsReturn', function(ped, enoughCops, hasDrugs, drugType)
     if enoughCops == true then
@@ -129,9 +140,8 @@ AddEventHandler('scrubz_drugs_cl:drugsReturn', function(ped, enoughCops, hasDrug
                     if Config.UseProgressBars then
                         exports['progressBars']:startUI(8000, "Slangin Drugs...")
                         Citizen.Wait(8000)
-                        plyPos = GetEntityCoords(plyPed)
-                        pedPos = GetEntityCoords(ped)
-                        if isNear(plyPos, pedPos, 3) then
+                        local isNearPed = #(plyPos - pedPos)
+                        if isNearPed <= 3 then
                             RequestAnimDict("mp_safehouselost@")
                             while not HasAnimDictLoaded("mp_safehouselost@") do
                                 Citizen.Wait(1)
@@ -165,9 +175,8 @@ AddEventHandler('scrubz_drugs_cl:drugsReturn', function(ped, enoughCops, hasDrug
                             },
                             }, function(status)
                             if not status then
-                                plyPos = GetEntityCoords(plyPed)
-                                pedPos = GetEntityCoords(ped)
-                                if isNear(plyPos, pedPos, 3) then
+                                local isNearPed = #(plyPos - pedPos)
+                                if isNearPed <= 3 then
                                     RequestAnimDict("mp_safehouselost@")
                                     while not HasAnimDictLoaded("mp_safehouselost@") do
                                         Citizen.Wait(1)
@@ -227,7 +236,6 @@ AddEventHandler('scrubz_drugs_cl:drugsReturn', function(ped, enoughCops, hasDrug
     isPlySelling = false
 end)
 
--- Chat Message Handler
 RegisterNetEvent('scrubz_drugs_cl:chatAlert')
 AddEventHandler('scrubz_drugs_cl:chatAlert', function(msg)
     if ESX.PlayerData.job.name == 'police' then
