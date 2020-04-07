@@ -45,15 +45,17 @@ Citizen.CreateThread(function()
             local plyPos = GetEntityCoords(plyPed)
             if not insideDrugLocation and displayText then
                 for k, v in pairs(drugLocations) do
-                    if v.enter then
+                    if v.enter or v.enter == nil then
                         local isNear = #(plyPos - v.pos)
                         if isNear <= 2 then
                             drawOnScreen(v.text, 0.920, 1.45, 1.0, 1.0, 0.45, 255, 255, 255, 255)
                             if IsControlJustPressed(0, 38) then  -- Key: E
-                                if v.id == weedEnter then
+                                if v.id == 'weedEnter' then
                                     teleportPly(plyPed, v.teleport)
                                     insideDrugLocation = true
                                     enableWeed = true
+                                elseif v.id == 'cokeTheft' then
+                                    stealCocaine()
                                 else
                                     teleportPly(plyPed, v.teleport)
                                     insideDrugLocation = true
@@ -69,7 +71,7 @@ Citizen.CreateThread(function()
                         if isNear <= 2 then
                             drawOnScreen(v.text, 0.920, 1.45, 1.0, 1.0, 0.45, 255, 255, 255, 255)
                             if IsControlJustPressed(0, 38) then  -- Key: E
-                                if v.id == weedExit then
+                                if v.id == 'weedExit' then
                                     teleportPly(plyPed, v.teleport)
                                     insideDrugLocation = false
                                     enableWeed = false
@@ -83,24 +85,24 @@ Citizen.CreateThread(function()
                 end
                 for k, v in pairs(drugPackaging) do
                     if not isPlyPolice then
-                        local isNear = #(plyPos - v.pos)
                         if not disableText then
+                            local isNear = #(plyPos - v.pos)
                             if isNear <= 3 then
                                 drawOnScreen(v.text, 0.920, 1.45, 1.0, 1.0, 0.45, 255, 255, 255, 255)
                                 if IsControlJustPressed(0, 38) then  -- Key: E
-                                    if v.id == pCoke then
+                                    if v.id == 'pCoke' then
                                         TriggerServerEvent('scrubz_drugs_sv:packageCocaine')
                                         disableText = true
-                                    elseif v.id == pMeth then
+                                    elseif v.id == 'pMeth' then
                                         TriggerServerEvent('scrubz_drugs_sv:packageMeth')
                                         disableText = true
-                                    elseif v.id == pCrack then
+                                    elseif v.id == 'pCrack' then
                                         TriggerServerEvent('scrubz_drugs_sv:packageCrack')
                                         disableText = true
-                                    elseif v.id == cMeth then
+                                    elseif v.id == 'cMeth' then
                                         TriggerServerEvent('scrubz_drugs_sv:produceMeth')
                                         disableText = true
-                                    elseif v.id == cCrack then
+                                    elseif v.id == 'cCrack' then
                                         TriggerServerEvent('scrubz_drugs_sv:produceCrack')
                                         disableText = true
                                     end
@@ -134,12 +136,14 @@ AddEventHandler('scrubz_drugs_cl:packageCocaine', function(package)
             RequestAnimDict("mp_safehouselost@")
             Citizen.Wait(5)
         end
+        FreezeEntityPosition(plyPed, true)
         TaskPlayAnim(plyPed, "mp_safehouselost@", "package_dropoff", 5.0, 1.0, -1, 48, 0, 0, 0, 0)
         if Config.UseProgressBars then
             exports['progressBars']:startUI(5000, "Bagging up some coke...")
             Citizen.Wait(5000)
             StopAnimTask(plyPed, "mp_safehouselost@", "package_dropoff", 1.0)
             Citizen.Wait(1000)
+            FreezeEntityPosition(plyPed, false)
             disableText = false
             exports['mythic_notify']:SendAlert('success', '1g of Coke Bagged!', 3500)
         elseif Config.UseMythicProgbar then
@@ -159,6 +163,7 @@ AddEventHandler('scrubz_drugs_cl:packageCocaine', function(package)
                 if not status then
                     StopAnimTask(plyPed, "mp_safehouselost@", "package_dropoff", 1.0)
                     Citizen.Wait(1000)
+                    FreezeEntityPosition(plyPed, false)
                     disableText = false
                     exports['mythic_notify']:SendAlert('success', '1g of Coke Bagged!', 3500)
                 end

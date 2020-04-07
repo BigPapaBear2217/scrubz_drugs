@@ -267,3 +267,40 @@ function policeAssualt(plyPed, outside, inside)
     teleportPly(plyPed, inside)
     DeleteRope(rope)
 end
+
+function stealCocaine()
+    local plyPed = GetPlayerPed(-1)
+    FreezeEntityPosition(plyPed, true)
+    TaskStartScenarioInPlace(plyPed, "PROP_HUMAN_BUM_BIN", 0, true)
+    if Config.UseProgressBars then
+        exports['progressBars']:startUI(5000, "Stealing some cocaine...")
+        Citizen.Wait(5000)
+        ClearPedTasks(plyPed)
+        Citizen.Wait(500)
+        FreezeEntityPosition(plyPed, false)
+        TriggerServerEvent('scrubz_drugs_sv:addCoke')
+    elseif Config.UseMythicProgbar then
+        exports['mythic_progbar']:Progress({
+            name = "coketheft",
+            duration = 5000,
+            label = "Stealing some cocaine...",
+            useWhileDead = false,
+            canCancel = false,
+            controlDisables = {
+                disableMovement = false,
+                disableCarMovement = false,
+                disableMouse = false,
+                disableCombat = false,
+            },
+            }, function(status)
+            if not status then
+                ClearPedTasks(plyPed)
+                Citizen.Wait(500)
+                FreezeEntityPosition(plyPed, false)
+                TriggerServerEvent('scrubz_drugs_sv:addCoke')
+            end
+        end)
+    elseif Config.UserExport then
+        -- //Add Your Export Here// --
+    end
+end

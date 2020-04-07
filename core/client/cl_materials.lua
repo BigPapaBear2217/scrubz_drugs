@@ -13,9 +13,9 @@ local mPoliceInfo = {}
 local mCriminalInfo = {}
 local mZones = {}
 
-RegisterCommand('doors', function(source, args, raw)
+--[[RegisterCommand('doors', function(source, args, raw)
     TriggerServerEvent('scrubz_drugs_sv:getDoors')
-end, false)
+end, false)]]
 
 local function lockpickAnimation(plyPed)
     Citizen.CreateThread(function()
@@ -360,7 +360,7 @@ AddEventHandler('scrubz_drugs_cl:startLockpick', function()
         isPlyLockpicking = false
         for k, v in pairs(mCriminalInfo) do
             if v.enter then
-                teleportPly(plyPed, v.pos)
+                teleportPly(plyPed, v.teleport)
                 insideLocation1 = true
             end
         end
@@ -384,7 +384,7 @@ AddEventHandler('scrubz_drugs_cl:startLockpick', function()
                 isPlyLockpicking = false
                 for k, v in pairs(mCriminalInfo) do
                     if v.enter then
-                        teleportPly(plyPed, v.pos)
+                        teleportPly(plyPed, v.teleport)
                         insideLocation1 = true
                     end
                 end

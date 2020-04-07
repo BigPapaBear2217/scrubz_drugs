@@ -3,20 +3,21 @@
 ---------------------------
 RegisterServerEvent('scrubz_drugs_sv:getDoors')
 AddEventHandler('scrubz_drugs_sv:getDoors', function()
-	local drugLocations = {  --[[1 = Weed Enter, 2 = Weed Exit, 3 = Coke Enter, 4 = Coke Exit, 5 = Meth Enter, 6 = Meth Exit]]
-		[1] = {pos = vector3(-99.91, -1783.16, 28.29), teleport = vector3(1066.41, -3183.51, -39.98), id = weedEnter, enter = true, text = 'Press ~r~[E]~w~ to enter'},
-		[2] = {pos = vector3(1066.41, -3183.51, -39.98), teleport = vector3(-99.91, -1783.16, 28.29), id = weedExit, enter = false,  text = 'Press ~r~[E]~w~ to exit'},
-		[3] = {pos = vector3(-85.98, -1794.88, 27.66), teleport = vector3(1088.65, -3187.46, -39.92), id = cokeEnter, enter = true, text = 'Press ~r~[E]~w~ to enter'},
-		[4] = {pos = vector3(1088.65, -3187.46, -39.92), teleport = vector3(-85.98, -1794.88, 27.66), id = cokeExit, enter = false,  text = 'Press ~r~[E]~w~ to exit'},
-		[5] = {pos = vector3(-93.73, -1788.34, 28.09), teleport = vector3(996.81, -3200.67, -37.22), id = methEnter, enter = true, text = 'Press ~r~[E]~w~ to enter'},
-		[6] = {pos = vector3(996.81, -3200.67, -37.22), teleport = vector3(-93.73, -1788.34, 28.09), id = methExit, enter = false,  text = 'Press ~r~[E]~w~ to exit'},
+	local drugLocations = {  --[[ 1 = Weed Enter, 2 = Weed Exit, 3 = Coke Enter, 4 = Coke Exit, 5 = Meth Enter, 6 = Meth Exit, 7 = Coke Gathering Door ]]
+		[1] = {pos = vector3(-99.91, -1783.16, 28.29), teleport = vector3(1066.41, -3183.51, -39.98), id = 'weedEnter', enter = true, text = 'Press ~r~[E]~w~ to enter'},
+		[2] = {pos = vector3(1066.41, -3183.51, -39.98), teleport = vector3(-99.91, -1783.16, 28.29), id = 'weedExit', enter = false,  text = 'Press ~r~[E]~w~ to exit'},
+		[3] = {pos = vector3(-85.98, -1794.88, 27.66), teleport = vector3(1088.65, -3187.46, -39.92), id = 'cokeEnter', enter = true, text = 'Press ~r~[E]~w~ to enter'},
+		[4] = {pos = vector3(1088.65, -3187.46, -39.92), teleport = vector3(-85.98, -1794.88, 27.66), id = 'cokeExit', enter = false,  text = 'Press ~r~[E]~w~ to exit'},
+		[5] = {pos = vector3(-93.73, -1788.34, 28.09), teleport = vector3(996.81, -3200.67, -37.22), id = 'methEnter', enter = true, text = 'Press ~r~[E]~w~ to enter'},
+		[6] = {pos = vector3(996.81, -3200.67, -37.22), teleport = vector3(-93.73, -1788.34, 28.09), id = 'methExit', enter = false,  text = 'Press ~r~[E]~w~ to exit'},
+		[7] = {pos = vector3(-74.91, -1803.15, 27.88), teleport = nil, id = 'cokeTheft', enter = nil,  text = 'Press ~r~[E]~w~ steal some coke'},
 	}
 	local drugPackaging = {  --[[ 1 = Coke Packaging, 2 = Meth Packaging, 3 = Crack Packaging, 4 = Meth Cooking, 5 = Crack Cooking ]]
-		[1] = {pos = vector3(1092.45, -3196.61, -39.98), id = pCoke, text = 'Press ~r~[E]~w~ to bag up some coke'},
-		[2] = {pos = vector3(1013.34, -3194.89, -39.78), id = pMeth, text = 'Press ~r~[E]~w~ to bag up some meth'},
-		[3] = {pos = vector3(1101.71, -3193.77, -39.81), id = pCrack, text = 'Press ~r~[E]~w~ to bag up some crack'},
-		[4] = {pos = vector3(1005.74, -3200.37, -39.35), id = cMeth, text = 'Press ~r~[E]~w~ to cook some meth'},
-		[5] = {pos = vector3(1100.81, -3198.83, -39.81), id = cCrack, text = 'Press ~r~[E]~w~ to cook some crack'},
+		[1] = {pos = vector3(1092.45, -3196.61, -39.98), id = 'pCoke', text = 'Press ~r~[E]~w~ to bag up some coke'},
+		[2] = {pos = vector3(1013.34, -3194.89, -39.78), id = 'pMeth', text = 'Press ~r~[E]~w~ to bag up some meth'},
+		[3] = {pos = vector3(1101.71, -3193.77, -39.81), id = 'pCrack', text = 'Press ~r~[E]~w~ to bag up some crack'},
+		[4] = {pos = vector3(1005.74, -3200.37, -39.35), id = 'cMeth', text = 'Press ~r~[E]~w~ to cook some meth'},
+		[5] = {pos = vector3(1100.81, -3198.83, -39.81), id = 'cCrack', text = 'Press ~r~[E]~w~ to cook some crack'},
 	}
 	local mRaidWarning = vector3(245.13, -1373.29, 29.12)
 	local mRaidMarker = vector3(243.02, -1376.61, 39.53)
@@ -193,4 +194,11 @@ AddEventHandler('scrubz_drugs_sv:packageCrack', function()
 		TriggerClientEvent('mythic_notify:client:SendAlert', source, { type = 'error', text = 'Not enough crack to bag up.', length = 4000 })
 		TriggerClientEvent('scrubz_drugs_cl:packageCrack', source, false)
 	end
+end)
+
+RegisterServerEvent('scrubz_drugs_sv:addCoke')
+AddEventHandler('scrubz_drugs_sv:addCoke', function()
+	local xPlayer = ESX.GetPlayerFromId(source)
+	local amount = math.random(1, 5)
+	xPlayer.addInventoryItem('rawcoke', amount)
 end)
