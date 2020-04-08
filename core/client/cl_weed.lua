@@ -13,7 +13,6 @@ local props = {
     'bkr_prop_weed_01_small_01c'
 }
 
-local plantTable = {}
 local plantsHarvested = {}
 local harvesting = false
 
@@ -86,18 +85,6 @@ Citizen.CreateThread(function()
         else
             Citizen.Wait(1000)
         end
-    end
-end)
-
----------------------------
--- Event Handlers --
----------------------------
-RegisterNetEvent('scrubz_drugs_cl:enableWeed')
-AddEventHandler('scrubz_drugs_cl:enableWeed', function(toggle)
-    if toggle then
-        enable = true
-    else
-        enable = false
     end
 end)
 

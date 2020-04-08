@@ -415,5 +415,10 @@ AddEventHandler('scrubz_drugs_cl:setStatus', function(cooldown)
         end
     else
         onCooldown = false
+        for k, v in pairs(mZones) do
+            if v.searched then
+                v.searched = false
+            end
+        end
     end
 end)
