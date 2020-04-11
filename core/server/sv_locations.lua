@@ -27,7 +27,7 @@ AddEventHandler('scrubz_drugs_sv:getDoors', function()
 		[3] = {pos = vector3(275.84, -1361.57, 24.54), teleport = vector3(241.21, -1378.93, 33.74), enter = false,  text = 'Press ~r~[E]~w~ to exit the building'},
 		--[4] = {pos = vector3(246.29, -1384.86, 39.53), teleport = vector3(251.36, -1390.34, 30.56), enter = false,  text = 'Press ~r~[E]~w~ to rappel down'}
 	}
-	local mCriminalInfo = {  --[[ 1 = Criminal Entry, 2 = Criminal Entry Exit, 3 = Police Exit 1 ]]
+	local mCriminalInfo = {  --[[ 1 = Criminal Entry, 2 = Criminal Entry Exit, 3 = Window Exit, 4 = Police Exit 1 ]]
 		[1] = {pos = vector3(232.41, -1361.07, 28.85), teleport = vector3(234.63, -1373.72, 21.98), enter = true,  text = 'Press ~r~[E]~w~ to lockpick the door'},
 		[2] = {pos = vector3(234.63, -1373.72, 21.98), teleport = vector3(232.41, -1361.07, 28.85), enter = false,  text = 'Press ~r~[E]~w~ to exit the building'},
 		[3] = {pos = vector3(234.44, -1374.89, 39.53), teleport = nil, enter = false,  text = 'Press ~r~[E]~w~ to risk exiting via the window'},
