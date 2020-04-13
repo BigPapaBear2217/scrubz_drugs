@@ -22,6 +22,7 @@ I have rewritten some of the code. Hopefully it shouldn't be super heavy for cli
 -- I'm not 100% sure what ipl's are loaded by default, but if you fall into the ground when you teleport, go grab fivem-ipl --> https://github.com/ESX-PUBLIC/fivem-ipl  
 -- You can change all the locations inside core/server/sv_locations.lua  
 -- Default Door Locations (Located across from the Grove St gas station)  
+(Ignore the restricted area. I didn't restart the script before I took the pic. Just tp'ed to the location. That won't be displayed in that location in the pic.) 
 ![alt text](https://i.imgur.com/4hpLJLR.png "Default Drug Door Locations")
 
 ---------------------------------------------------  
