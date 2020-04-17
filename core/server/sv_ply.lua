@@ -33,7 +33,7 @@ TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 ---------------------------
 function countPolice()
     local xPlayers = ESX.GetPlayers()
-    police = 0
+    copsConnected = 0
     for i=1, #xPlayers, 1 do
         local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
         if xPlayer.job.name == 'police' then
