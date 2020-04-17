@@ -14,7 +14,12 @@
 **Note**  
 I have rewritten some of the code. Hopefully it shouldn't be super heavy for clients. I have attempted to get it to run as close to 0.01ms as possible. I'm still a pepega, so if something can be written better/something is written wrong/you can optimize it better, please do so and make a pull request or just shoot me a message on discord: Scrubz#0001
 
----------------------------------------------------
+---------------------------------------------------   
+
+**Information**  
+The Class system for the robbery is meant as a police response/reward system. Class 1 means cops respond with pistols and rewards are less, Class 2 means cops respond with class 2 weapons(shotguns, smg, ar, etc) and the reward is larger. This doesn't mean that Class 2 should only be picked if the players doing the robbery have rifles and shit...that's not the purpose of it. Risk vs reward baby!! You can retool this however you want, but thats what I had in mind when I wrote it and I never actually explained that part. My b. I'm pepega. <3 ^_^
+
+---------------------------------------------------  
 
 **Information**  
 -- You will need to disable the default teleports in esx_ambulancejob.  
