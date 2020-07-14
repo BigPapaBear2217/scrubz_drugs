@@ -1,13 +1,13 @@
-**-----------------------------------**
-**-- Update [Resource Depreciated] --**
-**-----------------------------------**
-**This resource is no longer maintained. I do NOT code on esx anymore (since I have since started work on a custom framework).**
-I will NOT provide support for this, nor will I fix any current or future bugs/issues with this resource.
-I have instead opted to completely redo the drug system to move away from "Stand here and press E to get drugs." and make it 100% more indepth to enable 10000% better drug roleplay. 
-No I am NOT planning on releasing it, nor will I port it over to esx once finished. Don't ask.
-If you have any issues/concerns about this resource, then it is up to you to address and fix them.
-You are free to retool/recode this to suit your needs.
-If you release your own version of this resource on any platform for public use, YOU MUST provide credit and a link to this repo. Don't be a dick and give credit where credit is due. 
+**-----------------------------------**  
+**-- Update [Resource Depreciated] --**  
+**-----------------------------------**  
+**This resource is no longer maintained. I do NOT code on esx anymore (since I have since started work on a custom framework).**  
+I will NOT provide support for this, nor will I fix any current or future bugs/issues with this resource.  
+I have instead opted to completely redo the drug system to move away from "Stand here and press E to get drugs." and make it 100% more indepth to enable 10000% better drug roleplay.  
+No I am NOT planning on releasing it, nor will I port it over to esx once finished. Don't ask.  
+If you have any issues/concerns about this resource, then it is up to you to address and fix them.  
+You are free to retool/recode this to suit your needs.  
+If you release your own version of this resource on any platform for public use, YOU MUST provide credit and a link to this repo. Don't be a dick and give credit where credit is due.   
 
 
 ```
